@@ -1,0 +1,19 @@
+SVN               https://119.29.4.25/svn/test/trunk/H5    developer_jl     jl123
+
+测试服            10.100.129.40                            administrator    123Abc
+
+厨师俱乐部        172.16.10.13                             root             teway&CS&2016
+
+微商城            119.29.138.14                    
+
+mysql服务器：     119.29.4.25                              root             Teway8020  
+
+stest             119.29.4.25                              administrator    JfugzqQFr4GGKtB
+
+天味科技          teway_tech@163.com           XXr00t00      AppID wxa96bac0a8c19a07b	AppSecret 1194d311c3ed40773cfc2bebd47c0aa4
+
+有点火            ydh@teway.cn             youdianhuo888     AppID wx877b04918d7c2016  AppSecret 041d03b9231abc652173abd465157eee
+
+wx.udianhuo.com 119.29.4.25（公）/10.104.80.25                   	   Administrator 	JfugzqQFr4GGKtB
+cs.udianhuo.com 119.29.196.168（公）/ 10.104.120.74	                   Administrator	JfugzqQFr4GGKtB
+官网 1.0 119.29.138.14(公）/10.104.47.141	                   Administrator	k9DWJMUtChuJ3R
