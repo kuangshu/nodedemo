@@ -6,9 +6,11 @@
 		"react"
 	],
 	"plugins": [
-		["import", {
-			"libraryName": "antd",
-			"style": true, // or 'css' 
-		}]
+		[
+			"import", {
+				"libraryName": "antd",
+				"style": true, // or 'css' 
+			}
+		]
 	]
 }
