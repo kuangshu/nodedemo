@@ -87,7 +87,7 @@ app.get('/node/query', async function(req, res, next) {
 	}, err => {
 		data = err;
 	});*/
-	db.query(`SELECT * from member WHERE open_id='${openid}'`, function(err, rows) {
+	db.query(`SELECT state from member, WHERE open_id='${openid}'`, function(err, rows) {
 		if (err) {
 			res.send(err); // this renders "views/users.html"
 		} else {
