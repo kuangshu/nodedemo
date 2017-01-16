@@ -1,4 +1,7 @@
 //require('babel-polyfill')
+//fetch 请求模块
+//require('es6-promise').polyfill();
+//require('isomorphic-fetch');
 
 var express = require('express');
 var path = require('path');
@@ -9,15 +12,13 @@ var bodyParser = require('body-parser');
 var request = require('superagent');
 //import request from 'superagent';
 var index = require('./routes/index');
-
 var app = express();
+
+var config = require('./bin/config.dev.js');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-var appId = 'wxa96bac0a8c19a07b';
-var appSecret = '1194d311c3ed40773cfc2bebd47c0aa4';
 
 function getOpenid(code){
 	return new Promise((resolve, reject)=>{
@@ -26,15 +27,15 @@ function getOpenid(code){
 			.accept('json')
 			//.header('Accept', 'application/json')
 			.query({
-				appid: appId,
-				secret: appSecret,
+				appid: config.wx.appId,
+				secret: config.wx.appSecret,
 				code: code,
 				grant_type: 'authorization_code'
 			})
 			.then((err, res) => {
 				console.log(err.res.text, res)
 				err ? resolve(err.res.text) : reject(res);
-			});		
+			});	
 	})
 
 }
@@ -46,22 +47,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/node/wx/api/oauth2', async function(req, res){
-	var code = req.query.code;
-	var data = '';
+app.get('/node/wx/api/oauth2', async function(req, res, next){
+	var code = req.query.code,
+		state = req.query.state.split(',');
+	var data = '',project='',page='',extinfo='';
 	await getOpenid(code).then(result => {
 		data = result;
-	}).catch(result=>{
+	}).catch(result => {
 		data = result;
 	});
 	data = JSON.parse(data);
 	console.log(data);
 	if (data.openid) {
-		res.send(data.openid);
+		//res.send(data.openid);
+		project = state['0'];
+		page = state['1'];
+		res.redirect(`/${project}/?page=${page}&oponid=${data.openid}`);
 	} else {
-		res.send(data.errmsg);
+		//res.send(data.errmsg);
+		console.error(data.errmsg);
+		next();
 	}
-})
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
