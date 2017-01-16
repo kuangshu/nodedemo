@@ -14,7 +14,9 @@ var request = require('superagent');
 var index = require('./routes/index');
 var app = express();
 
-var config = require('./bin/config.dev.js');
+var config = require('./bin/config.js');
+//var User = require('./models/user.js');
+var db = require('./db.js');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -62,7 +64,8 @@ app.get('/node/wx/api/oauth2', async function(req, res, next){
 		//res.send(data.openid);
 		project = state['0'];
 		page = state['1'];
-		res.redirect(`/${project}/?page=${page}&oponid=${data.openid}`);
+
+		res.redirect(`/${project}/?page=${page}&openid=${data.openid}`);
 	} else {
 		//res.send(data.errmsg);
 		console.error(data.errmsg);
@@ -70,6 +73,29 @@ app.get('/node/wx/api/oauth2', async function(req, res, next){
 	}
 });
 
+app.get('/node/query', async function(req, res, next) {
+	let openid = req.query.openid;
+	let data, user;
+	console.log(openid);
+	/*user = await User.findAndCountAll({
+		where: {
+			openId: openid
+		}
+	}).then(user => {
+		console.log(user);
+		data = user;
+	}, err => {
+		data = err;
+	});*/
+	db.query(`SELECT * from member WHERE open_id='${openid}'`, function(err, rows) {
+		if (err) {
+			res.send(err); // this renders "views/users.html"
+		} else {
+			res.send(rows);
+		}
+	})
+	//res.send(data);
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
