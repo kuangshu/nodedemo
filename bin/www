@@ -3,7 +3,11 @@
 /**
  * Module dependencies.
  */
-//var babel = require("babel-core");
+
+require("babel-core").transform("code", {
+  presets: ["es2017"]
+});
+require("babel-polyfill");
 
 var app = require('../app');
 var debug = require('debug')('nodedemo:server');

@@ -11,7 +11,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var request = require('superagent');
 //import request from 'superagent';
-var index = require('./routes/index');
+//挂载mobile项目路由
+var vip = require('./routes/vip');
+var api = require('./service/api');
 var app = express();
 
 var config = require('./bin/config.js');
@@ -19,28 +21,15 @@ var config = require('./bin/config.js');
 var db = require('./db.js');
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'jade');
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', require('express-react-views').createEngine());
 
-function getOpenid(code){
-	return new Promise((resolve, reject)=>{
-		request
-			.get('https://api.weixin.qq.com/sns/oauth2/access_token')
-			.accept('json')
-			//.header('Accept', 'application/json')
-			.query({
-				appid: config.wx.appId,
-				secret: config.wx.appSecret,
-				code: code,
-				grant_type: 'authorization_code'
-			})
-			.then((err, res) => {
-				console.log(err.res.text, res)
-				err ? resolve(err.res.text) : reject(res);
-			});	
-	})
+app.use('/vip',vip);
+app.use('/node/api',api);
 
-}
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -48,30 +37,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/node/wx/api/oauth2', async function(req, res, next){
-	var code = req.query.code,
-		state = req.query.state.split(',');
-	var data = '',project='',page='',extinfo='';
-	await getOpenid(code).then(result => {
-		data = result;
-	}).catch(result => {
-		data = result;
-	});
-	data = JSON.parse(data);
-	console.log(data);
-	if (data.openid) {
-		//res.send(data.openid);
-		project = state['0'];
-		page = state['1'];
-
-		res.redirect(`/${project}/?page=${page}&openid=${data.openid}`);
-	} else {
-		//res.send(data.errmsg);
-		console.error(data.errmsg);
-		next();
-	}
-});
 
 app.get('/node/query', async function(req, res, next) {
 	let openid = req.query.openid;
@@ -96,6 +61,7 @@ app.get('/node/query', async function(req, res, next) {
 	})
 	//res.send(data);
 });
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -106,12 +72,15 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  //res.locals.message = err.message;
+  //res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  console.log(err.message);
+  console.log(err.status);
+  console.log(err.stack);
+  res.render('error', { err:err });
 });
 
 module.exports = app;
