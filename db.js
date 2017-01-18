@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 var config = require('./bin/config.js');
-var Sequelize = require('sequelize');
+//var Sequelize = require('sequelize');
 
 var pool = mysql.createPool({
 	host: config.mysql.host,

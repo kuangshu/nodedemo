@@ -11,12 +11,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 //import request from 'superagent';
 //挂载mobile项目路由
-var vip = require('./routes/vip');
+//var vip = require('./routes/vip');
 var api = require('./service/api');
 var app = express();
 
 //var User = require('./models/user.js');
-var db = require('./db.js');
+//var db = require('./db.js');
 
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));
