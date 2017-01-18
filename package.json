@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "pm2 start ./bin/www",
-    "dev": "DEBUG=nodedemo:* & node-dev --harmony ./bin/www"
+    "dev": "node-dev --harmony ./bin/www"
   },
   "dependencies": {
     "babel-core": "^6.21.0",

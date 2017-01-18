@@ -11,15 +11,16 @@ router.get('/wx/oauth2', async function(req, res, next) {
 	if(code && state){
 		state = state.split(',');
 		var data = '',project='',page='',extinfo='';
-		await util.getOpenid(code).then(result => {
-			data = result;
-		}).catch(result => {
-			data = result;
-		});
-		data = JSON.parse(data);
+		try {
+			data = await util.getOpenid(code);
+		} catch (err){
+			data = err;
+		};
 		console.log(data);
-		if (data.openid) {
+		if (JSON.parse(data).openid) {
 			//res.send(data.openid);
+			data = JSON.parse(data);
+			console.log(data.openid);
 			project = state['0'];
 			page = state['1'];
 			var state;
@@ -34,7 +35,7 @@ router.get('/wx/oauth2', async function(req, res, next) {
 			next(err);
 		}
 	} else {
-  		var err = new Error("没有有效的openid");
+  		var err = new Error("invalid code");
   		err.status = 404;
 		next(err);
 	}

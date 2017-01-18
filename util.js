@@ -1,8 +1,12 @@
+var request = require('superagent');
+var config = require('./bin/config.js');
+
 function getOpenid(code){
 	return new Promise((resolve, reject)=>{
+		console.log(code);
 		request
 			.get('https://api.weixin.qq.com/sns/oauth2/access_token')
-			.accept('json')
+			.accept('application/json')
 			//.header('Accept', 'application/json')
 			.query({
 				appid: config.wx.appId,
@@ -10,12 +14,14 @@ function getOpenid(code){
 				code: code,
 				grant_type: 'authorization_code'
 			})
-			.then((err, res) => {
-				console.log(err.res.text, res)
-				err ? resolve(err.res.text) : reject(res);
+			.then(res => {
+				console.log(res.text)
+				resolve(res.text);
+			},err=>{
+				console.log(err)
+				reject(err)
 			});	
-	})
-
+	});
 }
 
 module.exports = {
