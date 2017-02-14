@@ -1,7 +1,7 @@
 var request = require('superagent');
 var config = require('./bin/config.js');
 
-function getOpenid(code){
+/*function getOpenid(code){
 	return new Promise((resolve, reject)=>{
 		console.log(code);
 		request
@@ -22,7 +22,31 @@ function getOpenid(code){
 				reject(err)
 			});	
 	});
+}*/
+const getJsonRes = response => response.json().then(json => ({json, response}));
+const checkJson = ({json, response}) => {
+    if (!response.ok) {
+        return Promise.reject(json)
+    } else {
+        return {json};
+    }
 }
+export const getOpenid = code =>
+fetch('https://api.weixin.qq.com/sns/oauth2/access_token', {
+    method: 'get',
+    mode: 'cors',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+})
+.then(getJsonRes)
+.then(checkJson)
+.then(
+    data => data,
+    error => ({
+        error: error.message || 'Something bad happened'
+    })
+);
 
 module.exports = {
 	getOpenid: getOpenid

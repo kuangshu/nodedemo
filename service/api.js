@@ -16,7 +16,7 @@ router.get('/test', function(req, res, next) {
 		}
 	})
 });
-router.get('/wx/oauth2', async function(req, res, next) {
+router.get('/wx/oauth', async function(req, res, next) {
 	var code = req.query.code,
 		state = req.query.state;
 	if(code && state){

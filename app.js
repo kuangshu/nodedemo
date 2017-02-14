@@ -1,7 +1,7 @@
 //require('babel-polyfill')
 //fetch 请求模块
-//require('es6-promise').polyfill();
-//require('isomorphic-fetch');
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
 var express = require('express');
 var path = require('path');
