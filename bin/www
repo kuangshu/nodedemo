@@ -4,9 +4,6 @@
  * Module dependencies.
  */
 
-require("babel-core").transform("code", {
-  presets: ["es2017"]
-});
 require("babel-polyfill");
 
 var app = require('../app');

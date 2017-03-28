@@ -31,7 +31,7 @@ const checkJson = ({json, response}) => {
         return {json};
     }
 }
-export const getOpenid = code =>
+const getOpenid = code =>
 fetch('https://api.weixin.qq.com/sns/oauth2/access_token', {
     method: 'get',
     mode: 'cors',
@@ -49,5 +49,5 @@ fetch('https://api.weixin.qq.com/sns/oauth2/access_token', {
 );
 
 module.exports = {
-	getOpenid: getOpenid
+	getOpenid: getOpenid,
 }

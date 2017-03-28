@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start ./bin/www",
-    "dev": "node-dev --harmony ./bin/www"
+    "start": "nodemon ./bin/www --exec babel-node",
+    "dev": "node-dev --harmony ./bin/www --exec babel-node"
   },
   "dependencies": {
     "babel-core": "^6.21.0",

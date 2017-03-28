@@ -16,17 +16,14 @@ router.get('/test', function(req, res, next) {
 		}
 	})
 });
-router.get('/wx/oauth', async function(req, res, next) {
+router.get('/wx/oauth2', async function(req, res, next) {
 	var code = req.query.code,
 		state = req.query.state;
 	if(code && state){
 		state = state.split(',');
 		var data = '',project='',page='',extinfo='';
-		try {
-			data = await util.getOpenid(code);
-		} catch (err){
-			data = err;
-		};
+		data = await util.getOpenid(code);
+		console.log(data);
 		if (JSON.parse(data).openid) {
 			//res.send(data.openid);
 			let nstate = -1;
