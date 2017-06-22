@@ -34,7 +34,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use('/vip',vip);
-app.use('/node/api',api);
+//设置微信验证服务器
+app.use('/wx', function(req, res, next) {
+    let echostr = req.query.echostr;
+    console.log(echostr);
+    res.send(echostr);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
